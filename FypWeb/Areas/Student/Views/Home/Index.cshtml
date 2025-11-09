@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<!-- Your view content goes here -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Year Project Submission System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .logo img {
+            max-width: 500px;
+        }
+
+        .about {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .about h2 {
+            margin-bottom: 1rem;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 1rem;
+            padding: 1rem;
+            width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Logo">
+        </div>
+        <div class="about">
+            <h2>About This System</h2>
+            <p>This web-based system is designed to streamline the process of submitting and managing final year projects for students and faculty. With a user-friendly interface and robust features, it ensures a seamless experience for all users.</p>
+        </div>
+        <div class="content">
+            <div class="card">
+                <h3>Submit Your Project</h3>
+                <p>Students can easily submit their final year projects, ensuring all necessary documents and details are included.</p>
+            </div>
+            <div class="card">
+                <h3>Track Submission Status</h3>
+                <p>Stay updated with the status of your project submission and receive notifications on any required actions.</p>
+            </div>
+            <div class="card">
+                <h3>Faculty Review</h3>
+                <p>Faculty members can review submitted projects, provide feedback, and approve submissions efficiently.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

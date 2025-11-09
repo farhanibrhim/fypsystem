@@ -1,0 +1,82 @@
+﻿@using Fyp.Models.ViewModels
+@model IEnumerable<SupervisorApprovalVM>
+@functions {
+    public string GetBadgeClass(Fyp.Models.SupervisorApprovalStatus? status)
+    {
+        if (!status.HasValue)
+        {
+            return "badge bg-secondary";
+        }
+
+        switch (status.Value)
+        {
+            case Fyp.Models.SupervisorApprovalStatus.Not_Submitted_Yet:
+                return "badge bg-secondary";
+            case Fyp.Models.SupervisorApprovalStatus.Pending:
+                return "badge bg-warning";
+            case Fyp.Models.SupervisorApprovalStatus.Approved:
+                return "badge bg-success";
+            case Fyp.Models.SupervisorApprovalStatus.Rejected:
+                return "badge bg-danger";
+            default:
+                return "badge bg-secondary";
+        }
+    }
+}
+
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row pb-3">
+                <div class="col-6"><h2>Student List</h2></div>
+                <div class="col-6 text-end">
+                </div>
+            </div>           
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Supervisor Name</th>
+                        <th>Approval Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.StudentName</td>
+                            <td>@item.SupervisorName</td>
+                            <td class="status">
+                                <span class="@GetBadgeClass(item.SupervisorApprovalStatus)">@item.SupervisorApprovalStatus</span>
+                            </td>
+                            <td>
+                                    <form asp-action="ApproveSupervisor" asp-controller="StudentList" method="post" style="display:inline">
+                                        <input type="hidden" name="muridId" value="@item.MuridId" />
+                                        <button type="submit" class="btn btn-success">Approve</button>
+                                    </form>
+                                <form asp-action="SetPendingSupervisor" asp-controller="StudentList" method="post" style="display:inline">
+                                    <input type="hidden" name="muridId" value="@item.MuridId" />
+                                    <button type="submit" class="btn btn-warning">Pending</button>
+                                </form>
+                                    <form asp-action="RejectSupervisor" asp-controller="StudentList" method="post" style="display:inline">
+                                        <input type="hidden" name="muridId" value="@item.MuridId" />
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                    </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function resetFilter() {
+        document.getElementById("status").value = "";
+
+        document.getElementById("filterForm").submit();
+    }
+</script>

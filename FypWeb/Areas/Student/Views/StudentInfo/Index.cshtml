@@ -1,0 +1,166 @@
+﻿@using Fyp.Models.ViewModels
+@model StudentInfoVM
+@if (Model.Murid.AcademicSession == null || Model.Murid.Semester == null)
+{
+    <div class="alert alert-warning mt-3">
+        Please choose Academic Session and Semester.
+    </div>
+}
+
+@functions {
+    public string GetStatusClass(SupervisorApprovalStatus status)
+    {
+        switch (status)
+        {
+            case SupervisorApprovalStatus.Not_Submitted_Yet:
+                return "bg-gray text-dark";
+            case SupervisorApprovalStatus.Pending:
+                return "bg-yellow text-dark";
+            case SupervisorApprovalStatus.Approved:
+                return "bg-green text-white";
+            case SupervisorApprovalStatus.Rejected:
+                return "bg-red text-white";
+            default:
+                return "bg-gray text-dark";
+        }
+    }
+}
+
+<style>
+    .bg-gray {
+        background-color: gray;
+    }
+
+    .bg-yellow {
+        background-color: lightgoldenrodyellow;
+    }
+
+    .bg-green {
+        background-color: green;
+        color: white; /* Ensuring text is readable */
+    }
+
+    .bg-red {
+        background-color: red;
+        color: white; /* Ensuring text is readable */
+    }
+
+    .text-dark {
+        color: #333; /* Dark text color */
+    }
+
+    .text-white {
+        color: white; /* White text color */
+    }
+
+    /* Additional styling if needed */
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+
+</style>
+
+<div class="container rounded bg-white mt-3">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <span class="font-weight-bold">@Model.ApplicationUser.Name</span>
+                <span class="text-black-50">@Model.ApplicationUser.Email</span>
+                <span> </span>
+            </div>
+        </div>
+        <div class="col-md-8 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Student Info</h4>
+                </div>
+                <form asp-action="Index" method="post">
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label asp-for="ApplicationUser.Name" class="ms2"></label>
+                            <input asp-for="ApplicationUser.Name" readonly class="form-control border-0 shadow" />
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="ms2">Academic Session</label>
+                            <select class="form-select" asp-for="Murid.AcademicSession">
+                                <option value="">Select Session</option>
+                                <option value="2022/2023">2022/2023</option>
+                                <option value="2023/2024">2023/2024</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="ms2">Semester</label>
+                            <select class="form-select" asp-for="Murid.Semester">
+                                <option value="">Select Semester</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="ms2" asp-for="ApplicationUser.StreetAddress"></label>
+                            <input asp-for="ApplicationUser.StreetAddress" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label class="ms2" asp-for="ApplicationUser.IcNumber"></label>
+                            <input type="text" asp-for="ApplicationUser.IcNumber" class="form-control">
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label class="ms2" asp-for="ApplicationUser.PhoneNumber"></label>
+                            <input type="text" asp-for="ApplicationUser.PhoneNumber" class="form-control">
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label class="ms2">Gender</label>
+                            <select asp-for="ApplicationUser.Gender" class="form-select">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label class="ms2" asp-for="ApplicationUser.Nationality"></label>
+                            <input type="text" asp-for="ApplicationUser.Nationality" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-2 align-items-center">
+                        <div class="col-md-6">
+                            <label class="ms2">Supervisor</label>
+                            <select asp-for="Murid.SupervisorId" class="form-select">
+                                <option value="">Select Supervisor</option>
+                                @foreach (var supervisor in Model.Supervisors)
+                                {
+                                    <option value="@supervisor.Id">@supervisor.ApplicationUser.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6 pt-3">
+                            <label class="ms2">Approval Status: </label>
+                            <div class="badge @GetStatusClass(Model.Murid.SupervisorApprovalStatus)">
+                                @Model.Murid.SupervisorApprovalStatus.ToString()
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </form>
+                <!-- Notification for missing academic session or semester -->  
+            </div>
+            <hr />
+            <div class="align-content-center">
+                @if (Model.Murid.SupervisorApprovalStatus == SupervisorApprovalStatus.Approved)
+                {
+                    <div class="p-3 py-5">
+                        <h4 class="text-right">Agreement between Student and Supervisor</h4>
+                        <iframe src="/pdf/general agreement.pdf" width="80%" height="500px"></iframe>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

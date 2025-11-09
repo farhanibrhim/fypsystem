@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Fyp.Models.Proposal>
+@functions {
+    public string GetBadgeClass(Fyp.Models.ProposalStatus? status)
+    {
+        if (!status.HasValue)
+        {
+            return "badge bg-secondary";
+        }
+
+        switch (status.Value)
+        {
+            case Fyp.Models.ProposalStatus.Pending:
+                return "badge bg-warning";
+            case Fyp.Models.ProposalStatus.Accepted:
+                return "badge bg-success";
+            case Fyp.Models.ProposalStatus.AcceptedWithConditions:
+                return "badge bg-info";
+            case Fyp.Models.ProposalStatus.Rejected:
+                return "badge bg-danger";
+            default:
+                return "badge bg-secondary";
+        }
+    }
+}
+
+<div class="container">
+    <h2>Assigned Proposals</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="filterResult" class="form-label">Filter by Result</label>
+            <select id="filterResult" class="form-select">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="AcceptedWithConditions">AcceptedWithConditions</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+    </div>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>IC Number</th>
+                <th>Proposal Title</th>
+                <th>Proposal Document</th>
+                <th>Result Evaluation 1</th>
+                <th>Result Evaluation 2</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="proposalTableBody">
+            @foreach (var proposal in Model)
+            {
+                <tr class="proposal-row">
+                    <td>@proposal.Murid.ApplicationUser?.Name</td>
+                    <td>@proposal.Murid.ApplicationUser?.IcNumber</td>
+                    <td>@proposal.Title</td>
+                    <td><a href="@Url.Content("~/proposals/" + proposal.ProposalDocumentUrl)" target="_blank">View Document</a></td>
+                    <td class="proposal-result">
+                        <span class="@GetBadgeClass(proposal.Result1)">@proposal.Result1</span>
+                    </td>
+                    <td class="proposal-result">
+                        <span class="@GetBadgeClass(proposal.Result2)">@proposal.Result2</span>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Evaluate", new { id = proposal.Id })" class="btn btn-secondary">Evaluate</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('filterResult').addEventListener('change', function () {
+            var filterValue = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#proposalTableBody .proposal-row');
+
+            rows.forEach(function (row) {
+                var resultColumns = row.querySelectorAll('.proposal-result');
+                var showRow = false;
+
+                resultColumns.forEach(function (col) {
+                    if (filterValue === "" || col.innerText.toLowerCase().includes(filterValue)) {
+                        showRow = true;
+                    }
+                });
+
+                row.style.display = showRow ? '' : 'none';
+            });
+        });
+    </script>
+}

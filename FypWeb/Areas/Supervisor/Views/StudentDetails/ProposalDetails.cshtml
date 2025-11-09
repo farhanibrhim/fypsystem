@@ -1,0 +1,44 @@
+﻿@model Fyp.Models.Proposal
+
+<div class="container">
+    <h2>Proposal Details</h2>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Title</th>
+            <td>@Model.Title</td>
+        </tr>
+        <tr>
+            <th>Document</th>
+            <td><a href="@Url.Content("~/proposals/" + Model.ProposalDocumentUrl)" target="_blank">View Document</a></td>
+        </tr>
+        <tr>
+            <th>Supervisor Comments</th>
+            <td>@Model.SupervisorComments</td>
+        </tr>
+        <tr>
+            <th>Evaluator 1 Comments</th>
+            <td>@Model.Evaluator1Comments</td>
+        </tr>
+        <tr>
+            <th>Evaluator 2 Comments</th>
+            <td>@Model.Evaluator2Comments</td>
+        </tr>
+    </table>
+
+    <form asp-action="LeaveComments" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="form-group">
+            <label for="supervisorComments">Leave Comments</label>
+            <textarea id="supervisorComments" name="supervisorComments" class="form-control">@Model.SupervisorComments</textarea>
+        </div>
+        <div class="mt-2">
+            <button type="submit" class="btn btn-success">
+                @(string.IsNullOrEmpty(Model.SupervisorComments) ? "Submit" : "Re-submit")
+            </button>
+            <a href="@Url.Action("Index")" class="btn btn-primary">Back to List</a>
+        </div>
+        
+    </form>
+</div>
+

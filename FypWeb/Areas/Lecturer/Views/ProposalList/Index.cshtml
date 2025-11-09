@@ -1,0 +1,121 @@
+﻿@model Fyp.Models.ViewModels.ProposalListVM
+@functions {
+    public string GetBadgeClass(Fyp.Models.ProposalStatus? status)
+    {
+        if (!status.HasValue)
+        {
+            return "badge bg-secondary";
+        }
+
+        switch (status.Value)
+        {
+            case Fyp.Models.ProposalStatus.Pending:
+                return "badge bg-warning";
+            case Fyp.Models.ProposalStatus.Accepted:
+                return "badge bg-success";
+            case Fyp.Models.ProposalStatus.AcceptedWithConditions:
+                return "badge bg-info";
+            case Fyp.Models.ProposalStatus.Rejected:
+                return "badge bg-danger";
+            default:
+                return "badge bg-secondary";
+        }
+    }
+}
+<div class="container">
+    <h2>Submission Proposals List</h2>
+
+    <form id="filterForm" method="get">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select id="academicSession" name="academicSession" class="form-control">
+                        <option value="">Select Academic Session</option>
+                        <option value="2022/2023">2022/2023</option>
+                        <option value="2023/2024">2023/2024</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select id="semester" name="semester" class="form-control">
+                        <option value="">Select Semester</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select id="projectType" name="selectedProjectTypeId" class="form-control">
+                        <option value="">Select Project Type</option>
+                        @foreach (var item in Model.ProjectTypeList)
+                        {
+                            if (item.Value == Model.SelectedProjectTypeId?.ToString())
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="button" class="btn btn-secondary" onclick="resetFilter()">Reset Filter</button>
+            </div>
+        </div>  
+    </form>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Project Type</th>
+                <th>Student Name</th>
+                <th>IC Number</th>
+                <th>Evaluator 1</th>
+                <th>Evaluator 2</th>
+                <th>Result Evaluator 1</th>
+                <th>Result Evaluator 2</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var proposal in Model.Proposals)
+            {
+                <tr>
+                    <td>@proposal.Title</td>
+                    <td>@proposal.ProjectType?.Name</td>
+                    <td>@proposal.Murid.ApplicationUser.Name</td>
+                    <td>@proposal.Murid.ApplicationUser.IcNumber</td>
+                    <td>@proposal.Evaluator1?.ApplicationUser.Name</td>
+                    <td>@proposal.Evaluator2?.ApplicationUser.Name</td>
+                    <td class="proposal-result">
+                        <span class="@GetBadgeClass(proposal.Result1)">@proposal.Result1</span>
+                    </td>
+                    <td class="proposal-result">
+                        <span class="@GetBadgeClass(proposal.Result2)">@proposal.Result2</span>
+                    </td>
+                    <td width="300">
+                        <a href="@Url.Action("Details", new { id = proposal.Id })" class="btn btn-success">View</a>
+                        <a href="@Url.Action("AssignEvaluators", new { id = proposal.Id })" class="btn btn-secondary">Assign Evaluators</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function resetFilter() {
+        document.getElementById("academicSession").value = "";
+        document.getElementById("semester").value = "";
+        document.getElementById("projectType").value = "";
+
+        document.getElementById("filterForm").submit();
+    }
+</script>

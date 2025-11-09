@@ -1,0 +1,77 @@
+﻿@model Fyp.Models.Proposal
+@functions {
+    public string GetBadgeClass(Fyp.Models.ProposalStatus? status)
+    {
+        if (!status.HasValue)
+        {
+            return "badge bg-secondary";
+        }
+
+        switch (status.Value)
+        {
+            case Fyp.Models.ProposalStatus.Pending:
+                return "badge bg-warning";
+            case Fyp.Models.ProposalStatus.Accepted:
+                return "badge bg-success";
+            case Fyp.Models.ProposalStatus.AcceptedWithConditions:
+                return "badge bg-info";
+            case Fyp.Models.ProposalStatus.Rejected:
+                return "badge bg-danger";
+            default:
+                return "badge bg-secondary";
+        }
+    }
+}
+<div class="container">
+    <h2>Proposal Details</h2>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Title</th>
+            <td>@Model.Title</td>
+        </tr>
+        <tr>
+            <th>Project Type</th>
+            <td>@Model.ProjectType?.Name</td>
+        </tr>
+        <tr>
+            <th>Document</th>
+            <td>
+                @if (!string.IsNullOrEmpty(Model.ProposalDocumentUrl))
+                {
+                    <a href="~/proposals/@Model.ProposalDocumentUrl" target="_blank">View Document</a>
+                }
+            </td>
+        </tr>
+        @* <tr>
+            <th>Status</th>
+            <td>@Model.Status</td>
+        </tr> *@
+        <tr>
+            <th>Supervisor Comments</th>
+            <td>@Model.SupervisorComments</td>
+        </tr>
+        <tr>
+            <th>Evaluator 1 Comments</th>
+            <td>@Model.Evaluator1Comments</td>
+        </tr>
+        <tr>
+            <th>Evaluator 2 Comments</th>
+            <td>@Model.Evaluator2Comments</td>
+        </tr>
+        <tr>
+            <th>Evaluator 1 Result</th>
+            <td class="proposal-result">
+                <span class="@GetBadgeClass(Model.Result1)">@Model.Result1</span>
+            </td>           
+        </tr>
+        <tr>
+            <th>Evaluator 2 Result</th>
+            <td class="proposal-result">
+                <span class="@GetBadgeClass(Model.Result2)">@Model.Result2</span>
+            </td>
+        </tr>
+    </table>
+
+    <a href="@Url.Action("Index")" class="btn btn-primary">Back to List</a>
+</div>

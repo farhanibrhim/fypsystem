@@ -1,0 +1,124 @@
+﻿@page
+@model RegisterModel
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url('/images/login/background.jpg');
+        background-size: cover;
+        height: 100vh;
+    }
+</style>
+
+
+<h1>@ViewData["Title"]</h1>
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-primary bg-gradient m-lg-0 py-4">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="py-2 text-white">Register</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pt-3">
+            <div class="col-md-12">
+                <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <div class="form-floating mb-3 col-md-6">
+                                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select text-muted">
+                                    <option disabled selected>-Select Role-</option>
+                                </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-floating mb-3 col-md-6">
+                            <input asp-for="Input.Role" value="@SD.Role_Student" readonly class="form-control text-muted" />
+                        </div>
+                    }
+
+                    @* <div class="form-floating mb-3 col-md-6">
+                        <select asp-for="Input.LecturerId" asp-items="@Model.Input.LecturerList" class="form-select text-muted">
+                            <option disabled selected>-Select Lecturer-</option>
+                        </select>
+                    </div> *@
+                    <div class="form-floating mb-3 col-md-12">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="YAKUB BIN LUKMAN" />
+                        <label asp-for="Input.Name" class="ms-2 text-muted">Full Name</label>
+                        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.IcNumber" class="form-control" aria-required="true" placeholder="020230059911" />
+                        <label asp-for="Input.IcNumber" class="ms-2 text-muted">IC Number</label>
+                        <span asp-validation-for="Input.IcNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <select asp-for="Input.Gender" class="form-select text-muted" aria-required="true">
+                            <option value="">-Select Gender-</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password" class="ms-2 text-muted">Password</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="6012345678" />
+                        <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">Phone Number</label>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" placeholder="13A Kg Bharu" />
+                        <label asp-for="Input.StreetAddress" class="ms-2 text-muted">Street Address</label>
+                        <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.Nationality" class="form-control" aria-required="true" placeholder="Nigerian" />
+                        <label asp-for="Input.Nationality" class="ms-2 text-muted">Nationality</label>
+                        <span asp-validation-for="Input.Nationality" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg bg-primary text-white">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#Input_Role').change(function () {
+                var selection = $('#Input_Role Option:selected').text();
+                if (selection == 'Lecturer') {
+                    $('#Input_LecturerId').show();
+                }
+                else {
+                    $('#Input_LecturerId').hide();
+                }
+            })
+        })
+    </script>
+} *@

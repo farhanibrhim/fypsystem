@@ -1,0 +1,34 @@
+﻿@model AcademicProgram
+
+<div>
+    <h2>Edit Academic Program</h2>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <input asp-for="@Model.Id" hidden />
+            <div class="border p-3">
+                 @* <div asp-validation-summary="ModelOnly"></div>  *@
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Name" class="form-control border-0 shadow" />
+                    <label asp-for="Name" class="ms2"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Update</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="AcademicProgram" asp-action="Index" class="btn btn-outline-primary border form-control">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

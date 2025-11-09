@@ -1,0 +1,27 @@
+﻿@model Fyp.Models.ViewModels.AssignEvaluatorVM
+
+<div class="container">
+    <h2>Assign Evaluators</h2>
+
+    <form asp-action="AssignEvaluators" method="post">
+        <input type="hidden" asp-for="ProposalId" />
+        <div class="form-group">
+            <label for="evaluator1">Evaluator 1</label>
+            <select asp-for="Evaluator1Id" class="form-control" asp-items="Model.Evaluators">
+                <option value="">Select Evaluator</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="evaluator2">Evaluator 2</label>
+            <select asp-for="Evaluator2Id" class="form-control" asp-items="Model.Evaluators">
+                <option value="">Select Evaluator</option>
+            </select>
+        </div>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Assign</button>
+            <a href="@Url.Action("Index")" class="btn btn-primary">Back to List</a>
+        </div>
+        
+    </form> 
+</div>
+
